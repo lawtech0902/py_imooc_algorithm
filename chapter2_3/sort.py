@@ -140,7 +140,7 @@ def merge_sort(alist):
 
 def quick_sort(alist):
     """
-    快速排序
+    三路快速排序
     :param alist:
     :return:
     """
@@ -165,11 +165,83 @@ def quick_sort(alist):
     return less + pivot_list + more
 
 
-# alist = [10, 9, 8, 7, 6, 5, chapter4, 3, 2, 1]
-# print(bubble_sort(alist))
+def counting_sort(alist, k):
+    """
+    计数排序
+    :param alist:
+    :param k:
+    :return:
+    """
+    length = len(alist)
+    clist = [0] * (k + 1)
+    blist = [0] * length
+    for i in range(length):
+        # 计数数组
+        clist[alist[i]] += 1
+    for i in range(1, len(clist)):
+        # 对所有计数累加
+        clist[i] = clist[i] + clist[i - 1]
+    for i in range(length):
+        # 反向填充目标数组
+        blist[clist[alist[i]] - 1] = alist[i]
+        clist[alist[i]] -= 1
+    return blist
+
+
+def bucket_sort(alist):
+    """
+    桶排序
+    :param alist:
+    :return:
+    """
+    # 设置桶的大小
+    buckets = [0] * ((max(alist) - min(alist)) + 1)
+    # 设置桶中元素的值
+    for i in range(len(alist)):
+        buckets[alist[i] - min(alist)] += 1
+    # 将桶中元素存储到B
+    B = []
+    for i in range(len(buckets)):
+        if buckets[i] != 0:
+            B += [i + min(alist)] * buckets[i]
+    return B
+
+
+def heap_sort(alist):
+    # 创建最大堆
+    for start in range((len(alist) - 2) // 2, -1, -1):
+        shift_down(alist, start, len(list) - 1)
+
+    # 堆排序
+    for end in range(len(alist) - 1, 0, -1):
+        alist[0], alist[end] = alist[end], alist[0]
+        shift_down(alist, 0, end - 1)
+
+    return alist
+
+
+def shift_down(alist, start, end):
+    # 最大堆调整
+    root = start
+    while True:
+        child = root * 2 + 1
+        if child > end:
+            break
+        if child + 1 <= end and alist[child] < alist[child + 1]:
+            child += 1
+        if alist[root] < alist[child]:
+            alist[root], alist[child] = alist[root], alist[child]
+            root = child
+        else:
+            break
+
+
+# alist = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]
+# print(bucket_sort(alist))
+
 if __name__ == '__main__':
-    max = 5000
-    list = [randint(-max, max) for x in range(max)]
+    max_num = 5000
+    list = [randint(-max_num, max_num) for x in range(max_num)]
 
     alist = list[:]
     blist = list[:]
@@ -178,6 +250,9 @@ if __name__ == '__main__':
     elist = list[:]
     flist = list[:]
     glist = list[:]
+    hlist = list[:]
+    k = max_num
+    ilist = list[:]
 
     t1 = timeit.Timer('selection_sort(alist)', 'from __main__ import selection_sort, alist')
     print('选择排序：{} s'.format(t1.timeit(number=1)))
@@ -199,3 +274,9 @@ if __name__ == '__main__':
 
     t7 = timeit.Timer('quick_sort(glist)', 'from __main__ import quick_sort, glist')
     print('快速排序：{} s'.format(t7.timeit(number=1)))
+
+    t8 = timeit.Timer('counting_sort(hlist, k)', 'from __main__ import counting_sort, hlist, k')
+    print('计数排序：{} s'.format(t8.timeit(number=1)))
+
+    t9 = timeit.Timer('bucket_sort(ilist)', 'from __main__ import bucket_sort, ilist')
+    print('桶排序：{} s'.format(t9.timeit(number=1)))
