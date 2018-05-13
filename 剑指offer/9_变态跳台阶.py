@@ -1,0 +1,12 @@
+# _*_ coding: utf-8 _*_
+"""
+一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。
+__author__ = 'lawtech'
+__date__ = '2018/5/9 下午9:45'
+"""
+
+
+class Solution:
+    def jumpFloorII(self, number):
+        # write code here
+        return 2 ** (number - 1)
