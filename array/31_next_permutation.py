@@ -27,13 +27,20 @@ class Solution:
         最后将nums[x]及其右边的元素就地逆置
         """
         size = len(nums)
-        for x in range(size-1, -1, -1):
-            if nums[x-1] < nums[x]:
+        for x in range(size - 1, -1, -1):
+            if nums[x - 1] < nums[x]:
                 break
         if x > 0:
-            for y in range(size-1, -1, -1):
-                if nums[y] > nums[x-1]:
-                    nums[x-1], nums[y] = nums[y], nums[x-1]
+            for y in range(size - 1, -1, -1):
+                if nums[y] > nums[x - 1]:
+                    nums[x - 1], nums[y] = nums[y], nums[x - 1]
                     break
         for z in range((size - x) // 2):
-            nums[x+z], nums[size-z-1] = nums[size-z-1], nums[x+z]
+            nums[x + z], nums[size - z - 1] = nums[size - z - 1], nums[x + z]
+
+
+if __name__ == '__main__':
+    s = Solution()
+    nums = [1, 2, 3]
+    s.nextPermutation(nums)
+    print(nums)
